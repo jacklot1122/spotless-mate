@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Spotless Mate</title>
+<meta name="description" content="Friendly home cleaning in Ryde and greater Sydney. Regular, deep, end of lease and move in/out cleans.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Layout: one scrolling page in brand bands (teal hero, mint, white), content held to a 1120px column */
+:root {
+  --teal: #0F4C5C;
+  --teal-deep: #0A3540;
+  --sun: #FFD23F;
+  --mint: #CFF5EA;
+  --mint-pale: #E6F7F2;
+  --paper: #F7FBFA;
+  --white: #FFFFFF;
+  --ink-soft: #2F5F69;
+  --font-display: 'Fredoka', 'Nunito', 'Trebuchet MS', sans-serif;
+  --font-body: 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --radius: 24px;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body { background: var(--paper); color: var(--teal); font-family: var(--font-body); font-size: 17px; line-height: 1.55; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--teal); }
+h1, h2, h3 { font-family: var(--font-display); line-height: 1; margin: 0; text-wrap: balance; letter-spacing: -0.01em; }
+p { margin: 0; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--sun); outline-offset: 3px; border-radius: 6px; }
+
+.wrap { max-width: 1120px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.band { padding-block: clamp(56px, 9vw, 104px); }
+.eyebrow { font-size: 13px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; }
+.lead { font-size: clamp(17px, 2vw, 20px); color: var(--ink-soft); max-width: 60ch; }
+.sparkle { display: inline-block; flex-shrink: 0; }
+
+/* Header */
+.site-header { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--teal); color: var(--white); }
+.site-header .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 14px; }
+.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; font-family: var(--font-display); font-weight: 600; font-size: 24px; }
+.nav { display: flex; align-items: center; gap: 28px; }
+.nav a { text-decoration: none; font-weight: 500; font-size: 15px; color: var(--mint); }
+.nav a:hover { color: var(--white); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 48px; padding: 12px 26px; border-radius: 999px; border: 0; font-family: var(--font-display); font-weight: 600; font-size: 19px; text-decoration: none; cursor: pointer; transition: transform .15s ease, background-color .15s ease; }
+.btn:hover { transform: translateY(-2px); }
+@media (prefers-reduced-motion: reduce) { .btn { transition: none; } .btn:hover { transform: none; } }
+.btn-sun { background: var(--sun); color: var(--teal); }
+.btn-sun:hover { background: #FFE07A; }
+.btn-ghost { background: transparent; color: var(--white); box-shadow: inset 0 0 0 2px var(--mint); }
+.btn-ghost:hover { background: rgba(207,245,234,0.12); }
+.btn-teal { background: var(--teal); color: var(--white); }
+.btn-teal:hover { background: var(--teal-deep); }
+.nav .btn { min-height: 44px; padding: 8px 20px; font-size: 17px; color: var(--teal); }
+.nav .btn:hover { color: var(--teal); }
+@media (max-width: 720px) { .nav .text-link { display: none; } }
+
+/* Hero */
+.hero { background: var(--teal); color: var(--white); position: relative; overflow: hidden; }
+.hero .wrap { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 40px; align-items: center; padding-block: clamp(56px, 9vw, 112px); }
+.hero h1 { font-size: clamp(54px, 9vw, 112px); font-weight: 700; }
+.hero h1 span { color: var(--sun); }
+.hero .lead { color: var(--mint); margin-top: 24px; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 36px; }
+.hero-art { position: relative; aspect-ratio: 1; max-width: 100%; }
+.hero-art svg { position: absolute; }
+.hero-art .s1 { width: 58%; top: 8%; left: 18%; animation: twinkle 4s ease-in-out infinite; }
+.hero-art .s2 { width: 24%; top: 0; right: 4%; animation: twinkle 4s ease-in-out 1.3s infinite; }
+.hero-art .s3 { width: 16%; bottom: 14%; left: 6%; animation: twinkle 4s ease-in-out 2.6s infinite; }
+@keyframes twinkle { 0%, 100% { transform: scale(1) rotate(0); } 50% { transform: scale(0.86) rotate(8deg); } }
+@media (prefers-reduced-motion: reduce) { .hero-art svg { animation: none !important; } }
+@media (max-width: 760px) { .hero .wrap { grid-template-columns: 1fr; } .hero-art { display: none; } }
+.ticks { display: flex; flex-wrap: wrap; gap: 10px 24px; margin-top: 32px; font-size: 15px; color: var(--mint); }
+.ticks span { display: inline-flex; align-items: center; gap: 8px; }
+
+/* Section heads */
+.section-head { display: flex; flex-direction: column; gap: 16px; margin-bottom: 44px; }
+.section-head h2 { font-size: clamp(40px, 6vw, 64px); font-weight: 700; }
+
+/* Services */
+.services { background: var(--mint-pale); }
+.service-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
+@media (max-width: 960px) { .service-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 520px) { .service-grid { grid-template-columns: 1fr; } }
+.service { background: var(--white); border-radius: var(--radius); padding: 28px; display: flex; flex-direction: column; gap: 14px; }
+.icon-dot { width: 60px; height: 60px; border-radius: 50%; background: var(--sun); display: flex; align-items: center; justify-content: center; }
+.service h3 { font-size: 26px; font-weight: 600; }
+.service p { color: var(--ink-soft); font-size: 16px; }
+
+/* Checklist */
+.rooms { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+@media (max-width: 860px) { .rooms { grid-template-columns: 1fr; } }
+.room { border: 2px solid var(--mint); border-radius: var(--radius); padding: 28px; background: var(--white); }
+.room h3 { font-size: 26px; font-weight: 600; margin-bottom: 16px; }
+.room ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.room li { display: flex; gap: 12px; align-items: flex-start; color: var(--ink-soft); }
+.room li svg { margin-top: 3px; flex-shrink: 0; }
+
+/* Steps */
+.steps-band { background: var(--teal); color: var(--white); }
+.steps-band .lead { color: var(--mint); }
+.steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; counter-reset: step; }
+@media (max-width: 860px) { .steps { grid-template-columns: 1fr; } }
+.steps li { display: flex; flex-direction: column; gap: 12px; }
+.steps li::before { counter-increment: step; content: counter(step); width: 64px; height: 64px; border-radius: 50%; background: var(--sun); color: var(--teal); font-family: var(--font-display); font-weight: 700; font-size: 32px; display: flex; align-items: center; justify-content: center; margin-bottom: 6px; }
+.steps h3 { font-size: 28px; font-weight: 600; }
+.steps p { color: var(--mint); }
+
+/* Areas */
+.areas-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 48px; align-items: center; }
+@media (max-width: 860px) { .areas-grid { grid-template-columns: 1fr; gap: 28px; } }
+.chips { display: flex; flex-wrap: wrap; gap: 10px; }
+.chip { background: var(--teal); color: var(--white); border-radius: 999px; padding: 10px 20px; font-weight: 600; font-size: 16px; }
+.chip.more { background: var(--sun); color: var(--teal); }
+
+/* Tips */
+.tips { background: var(--sun); }
+.tips .lead { color: var(--teal); }
+.tip-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+@media (max-width: 760px) { .tip-grid { grid-template-columns: 1fr; } }
+.tip { background: var(--white); border-radius: var(--radius); padding: 30px; display: flex; flex-direction: column; gap: 12px; }
+.tip .eyebrow { color: var(--ink-soft); }
+.tip h3 { font-size: 30px; font-weight: 600; }
+.tip p { color: var(--ink-soft); }
+
+/* Quote */
+.quote-grid { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 48px; align-items: start; }
+@media (max-width: 900px) { .quote-grid { grid-template-columns: 1fr; gap: 32px; } }
+.new-card { background: var(--teal); color: var(--white); border-radius: var(--radius); padding: 32px; display: flex; flex-direction: column; gap: 14px; margin-top: 28px; }
+.new-card h3 { font-size: 32px; font-weight: 700; }
+.new-card h3 span { color: var(--sun); }
+.new-card p { color: var(--mint); }
+form { background: var(--white); border: 2px solid var(--mint); border-radius: var(--radius); padding: clamp(22px, 4vw, 36px); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+@media (max-width: 560px) { form { grid-template-columns: 1fr; } }
+.field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.field.full { grid-column: 1 / -1; }
+label { font-weight: 600; font-size: 15px; }
+input, select, textarea { font: inherit; font-size: 16px; color: var(--teal); background: var(--paper); border: 2px solid var(--mint); border-radius: 14px; padding: 12px 14px; min-height: 48px; width: 100%; }
+textarea { min-height: 110px; resize: vertical; }
+input:focus, select:focus, textarea:focus { outline: none; border-color: var(--teal); }
+.form-actions { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.hint { font-size: 14px; color: var(--ink-soft); }
+.result { grid-column: 1 / -1; background: var(--mint-pale); border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+.result pre { margin: 0; white-space: pre-wrap; word-break: break-word; font-family: var(--font-body); font-size: 15px; background: var(--white); border-radius: 12px; padding: 14px; user-select: all; }
+.result-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.result .btn { font-size: 17px; min-height: 44px; padding: 8px 20px; }
+
+/* Footer */
+.site-footer { background: var(--teal-deep); color: var(--mint); }
+.site-footer .wrap { padding-block: 40px; display: flex; flex-wrap: wrap; gap: 20px; justify-content: space-between; align-items: center; }
+.site-footer .logo { color: var(--white); }
+.site-footer a { color: var(--white); }
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap">
+    <a class="logo" href="#top" aria-label="Spotless Mate home">
+      <svg class="sparkle" aria-hidden="true" width="28" height="28" viewBox="0 0 100 100"><path d="M50 0C55 35 65 45 100 50C65 55 55 65 50 100C45 65 35 55 0 50C35 45 45 35 50 0Z" fill="#FFD23F"/></svg>
+      Spotless Mate
+    </a>
+    <nav class="nav" aria-label="Main">
+      <a class="text-link" href="#services">Services</a>
+      <a class="text-link" href="#how">How it works</a>
+      <a class="text-link" href="#areas">Areas</a>
+      <a class="btn btn-sun" href="#quote">Get a quote</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow" style="color: var(--mint); margin-bottom: 20px;">Home cleaning · Ryde &amp; greater Sydney</p>
+        <h1>Come home to <span>spotless.</span></h1>
+        <p class="lead">Friendly, reliable home cleaning from a local Ryde team. Weekly, fortnightly or one-off. You put your feet up, we'll do the scrubbing.</p>
+        <div class="hero-actions">
+          <a class="btn btn-sun" href="#quote">Get a free quote</a>
+          <a class="btn btn-ghost" href="https://www.instagram.com/spotlessmate/" target="_blank" rel="noopener">Follow @spotlessmate</a>
+        </div>
+        <div class="ticks">
+          <span><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFD23F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7"/></svg>Locally based in Ryde</span>
+          <span><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFD23F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7"/></svg>Regular or one-off cleans</span>
+          <span><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFD23F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7"/></svg>Free quotes</span>
+        </div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <svg class="s1" viewBox="0 0 100 100"><path d="M50 0C55 35 65 45 100 50C65 55 55 65 50 100C45 65 35 55 0 50C35 45 45 35 50 0Z" fill="#FFD23F"/></svg>
+        <svg class="s2" viewBox="0 0 100 100"><path d="M50 0C55 35 65 45 100 50C65 55 55 65 50 100C45 65 35 55 0 50C35 45 45 35 50 0Z" fill="#CFF5EA"/></svg>
+        <svg class="s3" viewBox="0 0 100 100"><path d="M50 0C55 35 65 45 100 50C65 55 55 65 50 100C45 65 35 55 0 50C35 45 45 35 50 0Z" fill="#CFF5EA"/></svg>
+      </div>
+    </div>
+  </section>
+
+  <section class="band services" id="services">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Our services</p>
+        <h2>What we clean</h2>
+      </div>
+      <div class="service-grid">
+        <article class="service">
+          <div class="icon-dot"><svg aria-hidden="true" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#0F4C5C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 3l9 8"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/></svg></div>
+          <h3>Regular cleans</h3>
+          <p>Weekly or fortnightly visits, so home always feels fresh.</p>
+        </article>
+        <article class="service">
+          <div class="icon-dot"><svg aria-hidden="true" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#0F4C5C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c1 7 3 9 10 10-7 1-9 3-10 10-1-7-3-9-10-10 7-1 9-3 10-10Z"/></svg></div>
+          <h3>Deep cleans</h3>
+          <p>A top-to-bottom refresh for every room in the house.</p>
+        </article>
+        <article class="service">
+          <div class="icon-dot"><svg aria-hidden="true" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#0F4C5C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="16" r="4"/><path d="M11 13 21 3"/><path d="m17 7 3 3"/><path d="m15 9 2 2"/></svg></div>
+          <h3>End of lease</h3>
+          <p>Moving out? We'll get the place ready for inspection.</p>
+        </article>
+        <article class="service">
+          <div class="icon-dot"><svg aria-hidden="true" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#0F4C5C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l9-4 9 4v10l-9 4-9-4Z"/><path d="m3 7 9 4 9-4"/><path d="M12 11v10"/></svg></div>
+          <h3>Move in / out</h3>
+          <p>Start fresh in your new home, or leave the old one sparkling.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="checklist">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Room by room</p>
+        <h2>What's in a regular clean?</h2>
+      </div>
+      <div class="rooms">
+        <div class="room">
+          <h3>Kitchen</h3>
+          <ul>
+            <li><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0F4C5C" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7"/></svg>Benchtops and splashback</li>
+            <li><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0F4C5C" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7"/></svg>Stovetop and sink</li>
+            <li><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0F4C5C" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7"/></svg>Cupboard fronts and handles</li>
+            <li><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0F4C5C" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7"/></svg>Floors vacuumed and mopped</li>
+          </ul>
+        </div>
+        <div class="room">
+          <h3>Bathrooms</h3>
+          <ul>
+            <li><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0F4C5C" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7"/></svg>Shower and bath</li>
+            <li><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0F4C5C" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7"/></svg>Toilet and vanity</li>
+            <li><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0F4C5C" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7"/></svg>Mirrors and taps polished</li>
+            <li><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0F4C5C" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7"/></svg>Floors mopped</li>
+          </ul>
+        </div>
+        <div class="room">
+          <h3>Living &amp; bedrooms</h3>
+          <ul>
+            <li><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0F4C5C" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7"/></svg>Dusting, high to low</li>
+            <li><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0F4C5C" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7"/></svg>Surfaces wiped</li>
+            <li><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0F4C5C" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7"/></svg>Carpets and rugs vacuumed</li>
+            <li><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0F4C5C" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7"/></svg>Hard floors mopped</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band steps-band" id="how">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow" style="color: var(--mint);">How it works</p>
+        <h2>Three easy steps</h2>
+      </div>
+      <ol class="steps">
+        <li><h3>Ask for a quote</h3><p>Tell us about your home and what you need. It's free and there's no obligation.</p></li>
+        <li><h3>Pick a time</h3><p>We'll lock in a day that suits you: weekly, fortnightly or a one-off.</p></li>
+        <li><h3>Come home to spotless</h3><p>Walk in, kick your shoes off and enjoy a fresh, clean home.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="band" id="areas">
+    <div class="wrap areas-grid">
+      <div class="section-head" style="margin-bottom: 0;">
+        <p class="eyebrow">Where we clean</p>
+        <h2>Proudly local to Ryde</h2>
+        <p class="lead">We're your neighbours. Based in Ryde and cleaning homes across the area and greater Sydney.</p>
+      </div>
+      <div class="chips">
+        <span class="chip">Ryde</span><span class="chip">West Ryde</span><span class="chip">North Ryde</span><span class="chip">Top Ryde</span><span class="chip">Eastwood</span><span class="chip">Gladesville</span><span class="chip">Meadowbank</span><span class="chip">Putney</span><span class="chip">Macquarie Park</span><span class="chip">Denistone</span><span class="chip more">+ greater Sydney</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="band tips" id="tips">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Mate's tips</p>
+        <h2>Clean smarter between visits</h2>
+      </div>
+      <div class="tip-grid">
+        <article class="tip">
+          <p class="eyebrow">Tip 1</p>
+          <h3>Clean top to bottom</h3>
+          <p>Dust falls. Start with fans, shelves and the tops of cupboards, then benchtops and tables, and finish with the floors. You'll only clean each surface once.</p>
+        </article>
+        <article class="tip">
+          <p class="eyebrow">Tip 2</p>
+          <h3>Microfibre is your best mate</h3>
+          <p>Use it damp, not dripping. Fold it into quarters for 8 clean sides. And skip the fabric softener when you wash it, because softener clogs the fibres.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="quote">
+    <div class="wrap quote-grid">
+      <div>
+        <div class="section-head" style="margin-bottom: 0;">
+          <p class="eyebrow">Free quote</p>
+          <h2>Let's get your home spotless</h2>
+          <p class="lead">Fill in a few details and we'll get back to you with a quote. Your enquiry is sent to us as a message on Instagram.</p>
+        </div>
+        <div class="new-card">
+          <p class="eyebrow" style="color: var(--mint);">We're new in town</p>
+          <h3>Be one of our first <span>happy homes.</span></h3>
+          <p>Book your first clean, then tell us how we went. Your review helps other Sydney locals find us.</p>
+        </div>
+      </div>
+
+      <form id="quote-form" novalidate>
+        <div class="field">
+          <label for="q-name">Your name</label>
+          <input id="q-name" name="name" autocomplete="name" required placeholder="e.g. Sam">
+        </div>
+        <div class="field">
+          <label for="q-suburb">Suburb</label>
+          <input id="q-suburb" name="suburb" autocomplete="address-level2" required placeholder="e.g. West Ryde">
+        </div>
+        <div class="field">
+          <label for="q-service">Type of clean</label>
+          <select id="q-service" name="service">
+            <option>Regular clean</option>
+            <option>Deep clean</option>
+            <option>End of lease</option>
+            <option>Move in / out</option>
+            <option>Not sure yet</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="q-often">How often?</label>
+          <select id="q-often" name="often">
+            <option>Weekly</option>
+            <option selected>Fortnightly</option>
+            <option>Monthly</option>
+            <option>Just once</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="q-beds">Bedrooms</label>
+          <select id="q-beds" name="beds">
+            <option>1</option><option selected>2</option><option>3</option><option>4</option><option>5+</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="q-baths">Bathrooms</label>
+          <select id="q-baths" name="baths">
+            <option selected>1</option><option>2</option><option>3</option><option>4+</option>
+          </select>
+        </div>
+        <div class="field full">
+          <label for="q-notes">Anything else? (optional)</label>
+          <textarea id="q-notes" name="notes" placeholder="Pets, preferred days, areas that need extra love..."></textarea>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-teal" type="submit">Get my quote</button>
+          <p class="hint" id="q-error" role="alert"></p>
+        </div>
+        <div class="result" id="q-result" hidden>
+          <p><strong>Nearly done!</strong> Copy your enquiry, then send it to us in a DM on Instagram.</p>
+          <pre id="q-text"></pre>
+          <div class="result-actions">
+            <button class="btn btn-sun" type="button" id="q-copy">Copy enquiry</button>
+            <a class="btn btn-teal" href="https://ig.me/m/spotlessmate" target="_blank" rel="noopener">Open Instagram DM</a>
+          </div>
+          <p class="hint" id="q-copied" aria-live="polite"></p>
+        </div>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <a class="logo" href="#top">
+      <svg class="sparkle" aria-hidden="true" width="26" height="26" viewBox="0 0 100 100"><path d="M50 0C55 35 65 45 100 50C65 55 55 65 50 100C45 65 35 55 0 50C35 45 45 35 50 0Z" fill="#FFD23F"/></svg>
+      Spotless Mate
+    </a>
+    <p>Home cleaning in Ryde &amp; greater Sydney · <a href="https://www.instagram.com/spotlessmate/" target="_blank" rel="noopener">@spotlessmate</a></p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var form = document.getElementById('quote-form');
+  var err = document.getElementById('q-error');
+  var result = document.getElementById('q-result');
+  var text = document.getElementById('q-text');
+  var copied = document.getElementById('q-copied');
+  function val(id) { return document.getElementById(id).value.trim(); }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var name = val('q-name'), suburb = val('q-suburb');
+    if (!name || !suburb) {
+      err.textContent = 'Please add your name and suburb so we know who to quote.';
+      (name ? document.getElementById('q-suburb') : document.getElementById('q-name')).focus();
+      return;
+    }
+    err.textContent = '';
+    var lines = [
+      "Hi Spotless Mate! I'd like a quote.",
+      'Name: ' + name,
+      'Suburb: ' + suburb,
+      'Clean: ' + val('q-service') + ' (' + val('q-often').toLowerCase() + ')',
+      'Home: ' + val('q-beds') + ' bed, ' + val('q-baths') + ' bath'
+    ];
+    var notes = val('q-notes');
+    if (notes) lines.push('Notes: ' + notes);
+    text.textContent = lines.join('\n');
+    copied.textContent = '';
+    result.hidden = false;
+    result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  });
+
+  document.getElementById('q-copy').addEventListener('click', function () {
+    var msg = text.textContent;
+    function fallback() {
+      var range = document.createRange();
+      range.selectNodeContents(text);
+      var sel = window.getSelection();
+      sel.removeAllRanges(); sel.addRange(range);
+      copied.textContent = 'Text selected. Press Ctrl+C (or long-press and Copy) to copy it.';
+    }
+    try {
+      navigator.clipboard.writeText(msg).then(function () {
+        copied.textContent = 'Copied. Now paste it into your Instagram DM.';
+      }, fallback);
+    } catch (e) { fallback(); }
+  });
+})();
+</script>
+</body>
+</html>
