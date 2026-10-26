@@ -320,7 +320,7 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--t
         <div class="section-head" style="margin-bottom: 0;">
           <p class="eyebrow">Free quote</p>
           <h2>Let's get your home spotless</h2>
-          <p class="lead">Fill in a few details and we'll get back to you with a quote. Your enquiry is sent to us as a message on Instagram.</p>
+          <p class="lead">Fill in a few details and we'll get back to you with a quote.</p>
         </div>
         <div class="new-card">
           <p class="eyebrow" style="color: var(--mint);">We're new in town</p>
@@ -337,6 +337,18 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--t
         <div class="field">
           <label for="q-suburb">Suburb</label>
           <input id="q-suburb" name="suburb" autocomplete="address-level2" required placeholder="e.g. West Ryde">
+        </div>
+        <div class="field">
+          <label for="q-phone">Phone</label>
+          <input id="q-phone" name="phone" type="tel" autocomplete="tel" placeholder="e.g. 0400 000 000">
+        </div>
+        <div class="field">
+          <label for="q-email">Email</label>
+          <input id="q-email" name="email" type="email" autocomplete="email" placeholder="you@example.com">
+        </div>
+        <div class="field" style="position: absolute; left: -9999px;" aria-hidden="true">
+          <label for="q-company">Company</label>
+          <input id="q-company" name="company" tabindex="-1" autocomplete="off">
         </div>
         <div class="field">
           <label for="q-service">Type of clean</label>
@@ -374,11 +386,14 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--t
           <textarea id="q-notes" name="notes" placeholder="Pets, preferred days, areas that need extra love..."></textarea>
         </div>
         <div class="form-actions">
-          <button class="btn btn-teal" type="submit">Get my quote</button>
+          <button class="btn btn-teal" type="submit" id="q-submit">Get my quote</button>
           <p class="hint" id="q-error" role="alert"></p>
         </div>
+        <div class="result" id="q-sent" hidden>
+          <p><strong>Thanks, we've got your enquiry!</strong> We'll be in touch soon with your quote.</p>
+        </div>
         <div class="result" id="q-result" hidden>
-          <p><strong>Nearly done!</strong> Copy your enquiry, then send it to us in a DM on Instagram.</p>
+          <p><strong>We couldn't send that just now.</strong> Copy your enquiry, then send it to us in a DM on Instagram.</p>
           <pre id="q-text"></pre>
           <div class="result-actions">
             <button class="btn btn-sun" type="button" id="q-copy">Copy enquiry</button>
@@ -408,7 +423,27 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--t
   var result = document.getElementById('q-result');
   var text = document.getElementById('q-text');
   var copied = document.getElementById('q-copied');
+  var sent = document.getElementById('q-sent');
+  var submit = document.getElementById('q-submit');
   function val(id) { return document.getElementById(id).value.trim(); }
+
+  function showFallback() {
+    var lines = [
+      "Hi Spotless Mate! I'd like a quote.",
+      'Name: ' + val('q-name'),
+      'Suburb: ' + val('q-suburb'),
+      'Clean: ' + val('q-service') + ' (' + val('q-often').toLowerCase() + ')',
+      'Home: ' + val('q-beds') + ' bed, ' + val('q-baths') + ' bath'
+    ];
+    if (val('q-phone')) lines.push('Phone: ' + val('q-phone'));
+    if (val('q-email')) lines.push('Email: ' + val('q-email'));
+    var notes = val('q-notes');
+    if (notes) lines.push('Notes: ' + notes);
+    text.textContent = lines.join('\n');
+    copied.textContent = '';
+    result.hidden = false;
+    result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
 
   form.addEventListener('submit', function (e) {
     e.preventDefault();
@@ -418,20 +453,42 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--t
       (name ? document.getElementById('q-suburb') : document.getElementById('q-name')).focus();
       return;
     }
+    if (!val('q-phone') && !val('q-email')) {
+      err.textContent = 'Please add a phone number or email so we can send your quote.';
+      document.getElementById('q-phone').focus();
+      return;
+    }
     err.textContent = '';
-    var lines = [
-      "Hi Spotless Mate! I'd like a quote.",
-      'Name: ' + name,
-      'Suburb: ' + suburb,
-      'Clean: ' + val('q-service') + ' (' + val('q-often').toLowerCase() + ')',
-      'Home: ' + val('q-beds') + ' bed, ' + val('q-baths') + ' bath'
-    ];
-    var notes = val('q-notes');
-    if (notes) lines.push('Notes: ' + notes);
-    text.textContent = lines.join('\n');
-    copied.textContent = '';
-    result.hidden = false;
-    result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    result.hidden = true;
+    sent.hidden = true;
+    submit.disabled = true;
+    submit.textContent = 'Sending...';
+
+    var payload = {};
+    ['name', 'suburb', 'phone', 'email', 'service', 'often', 'beds', 'baths', 'notes', 'company'].forEach(function (k) {
+      payload[k] = val('q-' + k);
+    });
+
+    fetch('/api/enquiry', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).then(function (r) {
+      return r.json().catch(function () { return {}; }).then(function (d) { return { ok: r.ok, status: r.status, data: d }; });
+    }).then(function (r) {
+      if (r.ok) {
+        form.reset();
+        sent.hidden = false;
+        sent.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      } else if (r.status === 400 && r.data.error) {
+        err.textContent = r.data.error;
+      } else {
+        showFallback();
+      }
+    }).catch(showFallback).then(function () {
+      submit.disabled = false;
+      submit.textContent = 'Get my quote';
+    });
   });
 
   document.getElementById('q-copy').addEventListener('click', function () {
