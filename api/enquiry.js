@@ -41,7 +41,7 @@ module.exports = async function handler(req, res) {
   }
 
   // Honeypot: real visitors never see or fill this field.
-  if (clean(body.company, 200)) return res.status(200).json({ ok: true });
+  if (clean(body.website, 200)) return res.status(200).json({ ok: true });
 
   const data = {};
   FIELDS.forEach(function (f) { data[f[0]] = clean(body[f[0]], f[0] === 'notes' ? 2000 : 200); });
