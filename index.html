@@ -149,6 +149,8 @@ a { color: inherit; }
 .new-card h3 { font-size: 32px; font-weight: 700; }
 .new-card h3 span { color: var(--sun); }
 .new-card p { color: var(--mint); }
+.new-card .insured { display: flex; gap: 12px; align-items: flex-start; padding-top: 16px; border-top: 1px solid rgba(207,245,234,0.25); color: var(--white); font-weight: 500; }
+.new-card .insured svg { flex-shrink: 0; margin-top: 1px; }
 form { background: var(--white); border: 2px solid var(--mint); border-radius: var(--radius); padding: clamp(22px, 4vw, 36px); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
 @media (max-width: 560px) { form > * { grid-column: 1 / -1; } form > .field.half { grid-column: auto; } }
 .field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
@@ -203,6 +205,8 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--t
   .new-card h3 { font-size: 27px; }
   form { gap: 16px; }
   .form-actions .hint:empty { display: none; }
+  .foot-info .sep { display: none; }
+  .foot-info span { display: block; }
   .site-footer .wrap { flex-direction: column; align-items: flex-start; gap: 8px; padding-block: 32px max(32px, env(safe-area-inset-bottom, 0px)); }
 }
 @media (max-width: 359px) {
@@ -242,6 +246,7 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--t
           <span><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFD23F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7"/></svg>Locally based in Ryde</span>
           <span><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFD23F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7"/></svg>Regular or one-off cleans</span>
           <span><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFD23F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7"/></svg>Regular cleans from $199</span>
+          <span><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFD23F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7"/></svg>Public liability insured</span>
         </div>
       </div>
       <div class="hero-art" aria-hidden="true">
@@ -383,6 +388,7 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--t
           <p class="eyebrow" style="color: var(--mint);">We're new in town</p>
           <h3>Be one of our first <span>happy homes.</span></h3>
           <p>Book your first clean, then tell us how we went. Your review helps other Sydney locals find us.</p>
+          <p class="insured"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFD23F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.4 7.5 9.5 4.3-1.1 7.5-4.9 7.5-9.5V6Z"/><path d="m8.8 12.2 2.3 2.3 4.4-4.6"/></svg>Every cleaner is covered by public liability insurance, so your home is in safe hands.</p>
         </div>
       </div>
 
@@ -466,7 +472,7 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--t
       <svg class="sparkle" aria-hidden="true" width="26" height="26" viewBox="0 0 100 100"><path d="M50 0C55 35 65 45 100 50C65 55 55 65 50 100C45 65 35 55 0 50C35 45 45 35 50 0Z" fill="#FFD23F"/></svg>
       Spotless Mate
     </a>
-    <p>Home cleaning in Ryde &amp; greater Sydney · <a href="https://www.instagram.com/spotlessmate/" target="_blank" rel="noopener">@spotlessmate</a></p>
+    <p class="foot-info"><span>Home cleaning in Ryde &amp; greater Sydney</span><span class="sep"> · </span><span>Public liability insured</span><span class="sep"> · </span><a href="https://www.instagram.com/spotlessmate/" target="_blank" rel="noopener">@spotlessmate</a></p>
   </div>
 </footer>
 
