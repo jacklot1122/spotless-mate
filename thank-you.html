@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Thanks for your enquiry | Spotless Mate</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600&display=swap">
+<style>
+:root {
+  --teal: #0F4C5C;
+  --teal-deep: #0A3540;
+  --sun: #FFD23F;
+  --mint: #CFF5EA;
+  --mint-pale: #E6F7F2;
+  --paper: #F7FBFA;
+  --white: #FFFFFF;
+  --ink-soft: #2F5F69;
+  --font-display: 'Fredoka', 'Nunito', 'Trebuchet MS', sans-serif;
+  --font-body: 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --radius: 24px;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; }
+body { margin: 0; min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; background: var(--paper); color: var(--teal); font-family: var(--font-body); font-size: 17px; line-height: 1.55; }
+h1, h2, h3 { font-family: var(--font-display); line-height: 1; margin: 0; text-wrap: balance; letter-spacing: -0.01em; }
+p { margin: 0; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--sun); outline-offset: 3px; border-radius: 6px; }
+.wrap { max-width: 1120px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.eyebrow { font-size: 13px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; }
+
+.site-header { background: var(--teal); color: var(--white); padding-top: env(safe-area-inset-top, 0px); }
+.site-header .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 14px; }
+.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; font-family: var(--font-display); font-weight: 600; font-size: 24px; white-space: nowrap; min-height: 44px; }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 48px; padding: 12px 26px; border-radius: 999px; border: 0; font-family: var(--font-display); font-weight: 600; font-size: 19px; text-decoration: none; cursor: pointer; white-space: nowrap; touch-action: manipulation; transition: transform .15s ease, background-color .15s ease; }
+@media (hover: hover) { .btn:hover { transform: translateY(-2px); } }
+@media (prefers-reduced-motion: reduce) { .btn { transition: none; } .btn:hover { transform: none; } }
+.btn-sun { background: var(--sun); color: var(--teal); }
+.btn-sun:hover { background: #FFE07A; }
+.btn-ghost { background: transparent; color: var(--white); box-shadow: inset 0 0 0 2px var(--mint); }
+.btn-ghost:hover { background: rgba(207,245,234,0.12); }
+
+.hero { background: var(--teal); color: var(--white); text-align: center; }
+.hero .wrap { padding-block: clamp(48px, 9vw, 104px); display: flex; flex-direction: column; align-items: center; gap: 22px; }
+.badge { width: 96px; height: 96px; border-radius: 50%; background: var(--sun); display: flex; align-items: center; justify-content: center; animation: pop .5s ease-out both; }
+@keyframes pop { 0% { transform: scale(0.6); opacity: 0; } 70% { transform: scale(1.08); } 100% { transform: scale(1); opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .badge { animation: none; } }
+.hero h1 { font-size: clamp(46px, 9vw, 96px); font-weight: 700; }
+.hero h1 span { color: var(--sun); }
+.hero .lead { font-size: clamp(17px, 2vw, 20px); color: var(--mint); max-width: 52ch; }
+.hero-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; margin-top: 8px; }
+
+.next { padding-block: clamp(48px, 8vw, 88px); flex: 1; }
+.next h2 { font-size: clamp(34px, 5vw, 48px); font-weight: 700; margin-bottom: 28px; text-align: center; }
+.steps { list-style: none; margin: 0 auto; padding: 0; max-width: 960px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; counter-reset: step; }
+.steps li { background: var(--white); border: 2px solid var(--mint); border-radius: var(--radius); padding: 26px; display: flex; flex-direction: column; gap: 10px; }
+.steps li::before { counter-increment: step; content: counter(step); width: 52px; height: 52px; border-radius: 50%; background: var(--sun); color: var(--teal); font-family: var(--font-display); font-weight: 700; font-size: 26px; display: flex; align-items: center; justify-content: center; margin-bottom: 4px; }
+.steps h3 { font-size: 24px; font-weight: 600; }
+.steps p { color: var(--ink-soft); font-size: 16px; }
+
+.site-footer { background: var(--teal-deep); color: var(--mint); }
+.site-footer .wrap { padding-block: 32px max(32px, env(safe-area-inset-bottom, 0px)); display: flex; flex-wrap: wrap; gap: 12px 20px; justify-content: space-between; align-items: center; }
+.site-footer .logo { color: var(--white); }
+.site-footer a { color: var(--white); }
+.site-footer p a { display: inline-block; padding-block: 12px; }
+
+@media (max-width: 760px) {
+  .steps { grid-template-columns: 1fr; gap: 14px; }
+  .steps li { display: grid; grid-template-columns: 52px 1fr; column-gap: 16px; row-gap: 6px; align-items: center; padding: 22px; }
+  .steps li::before { margin: 0; grid-row: span 2; align-self: start; }
+}
+@media (max-width: 560px) {
+  body { font-size: 16px; }
+  .site-header .wrap { padding-block: 10px; }
+  .logo { font-size: 21px; gap: 8px; }
+  .badge { width: 80px; height: 80px; }
+  .badge svg { width: 40px; height: 40px; }
+  .hero-actions { flex-direction: column; width: 100%; }
+  .hero-actions .btn { width: 100%; }
+  .site-footer .wrap { flex-direction: column; align-items: flex-start; gap: 8px; }
+}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap">
+    <a class="logo" href="/" aria-label="Spotless Mate home">
+      <svg aria-hidden="true" width="26" height="26" viewBox="0 0 100 100"><path d="M50 0C55 35 65 45 100 50C65 55 55 65 50 100C45 65 35 55 0 50C35 45 45 35 50 0Z" fill="#FFD23F"/></svg>
+      Spotless Mate
+    </a>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <div class="badge" aria-hidden="true">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#0F4C5C" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7"/></svg>
+      </div>
+      <p class="eyebrow" style="color: var(--mint);">Enquiry received</p>
+      <h1>Thanks<span id="who"></span> <span>for enquiring!</span></h1>
+      <p class="lead" id="lead">We've got your details and our team will be in touch shortly with your free quote.</p>
+      <div class="hero-actions">
+        <a class="btn btn-sun" href="/">Back to home</a>
+        <a class="btn btn-ghost" href="https://www.instagram.com/spotlessmate/" target="_blank" rel="noopener">Follow @spotlessmate</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="next">
+    <div class="wrap">
+      <h2>What happens next</h2>
+      <ol class="steps">
+        <li><h3>We review your details</h3><p>We'll look over your home and the type of clean you're after.</p></li>
+        <li><h3>We send your quote</h3><p>You'll hear from us soon by phone or email with a free, no-obligation quote.</p></li>
+        <li><h3>Pick a time</h3><p>Happy with it? We'll lock in a day that suits you and get your home spotless.</p></li>
+      </ol>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <a class="logo" href="/">
+      <svg aria-hidden="true" width="26" height="26" viewBox="0 0 100 100"><path d="M50 0C55 35 65 45 100 50C65 55 55 65 50 100C45 65 35 55 0 50C35 45 45 35 50 0Z" fill="#FFD23F"/></svg>
+      Spotless Mate
+    </a>
+    <p>Home cleaning in Ryde &amp; greater Sydney · <a href="https://www.instagram.com/spotlessmate/" target="_blank" rel="noopener">@spotlessmate</a></p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  // Personalise with the name and email the quote form saved, if available.
+  var name = '', email = '';
+  try {
+    name = sessionStorage.getItem('sm-name') || '';
+    email = sessionStorage.getItem('sm-email') || '';
+  } catch (e) {}
+  if (name) document.getElementById('who').textContent = ', ' + name.split(/\s+/)[0] + ',';
+  if (email) {
+    document.getElementById('lead').textContent =
+      "We've got your details and our team will be in touch shortly with your free quote. We've also sent a confirmation to " + email + '.';
+  }
+})();
+</script>
+</body>
+</html>

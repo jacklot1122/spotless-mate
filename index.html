@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Spotless Mate</title>
 <meta name="description" content="Friendly home cleaning in Ryde and greater Sydney. Regular, deep, end of lease and move in/out cleans.">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600&display=swap">
 <style>
@@ -432,9 +434,6 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--t
           <button class="btn btn-teal" type="submit" id="q-submit">Get my quote</button>
           <p class="hint" id="q-error" role="alert"></p>
         </div>
-        <div class="result" id="q-sent" hidden>
-          <p><strong>Thanks, we've got your enquiry!</strong> We'll be in touch soon with your quote.</p>
-        </div>
         <div class="result" id="q-result" hidden>
           <p><strong>We couldn't send that just now.</strong> Copy your enquiry, then send it to us in a DM on Instagram.</p>
           <pre id="q-text"></pre>
@@ -466,7 +465,6 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--t
   var result = document.getElementById('q-result');
   var text = document.getElementById('q-text');
   var copied = document.getElementById('q-copied');
-  var sent = document.getElementById('q-sent');
   var submit = document.getElementById('q-submit');
   function val(id) { return document.getElementById(id).value.trim(); }
 
@@ -503,7 +501,6 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--t
     }
     err.textContent = '';
     result.hidden = true;
-    sent.hidden = true;
     submit.disabled = true;
     submit.textContent = 'Sending...';
 
@@ -520,9 +517,12 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--t
       return r.json().catch(function () { return {}; }).then(function (d) { return { ok: r.ok, status: r.status, data: d }; });
     }).then(function (r) {
       if (r.ok) {
-        form.reset();
-        sent.hidden = false;
-        sent.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        try {
+          sessionStorage.setItem('sm-name', payload.name);
+          sessionStorage.setItem('sm-email', payload.email);
+        } catch (e) {}
+        window.location.href = '/thank-you';
+        return;
       } else if (r.status === 400 && r.data.error) {
         err.textContent = r.data.error;
       } else {

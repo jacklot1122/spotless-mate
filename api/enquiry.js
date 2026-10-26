@@ -82,7 +82,8 @@ module.exports = async function handler(req, res) {
 
   // Confirmation to the customer. The enquiry already reached us, so a failure here is only logged.
   if (data.email) {
-    await send(confirmation(data, rows));
+    const site = process.env.SITE_URL || 'https://' + (req.headers['x-forwarded-host'] || req.headers.host);
+    await send(confirmation(data, rows, site.replace(/\/$/, '')));
   }
 
   return res.status(200).json({ ok: true });
@@ -109,7 +110,7 @@ async function send(payload) {
   }
 }
 
-function confirmation(data, rows) {
+function confirmation(data, rows, site) {
   const first = data.name.split(/\s+/)[0];
   const summary = rows.filter(function (f) { return f[0] !== 'name' && f[0] !== 'email'; });
   const text =
@@ -121,6 +122,8 @@ function confirmation(data, rows) {
     'Cheers,\nThe Spotless Mate team\nHome cleaning in Ryde & greater Sydney\ninstagram.com/spotlessmate';
   const html =
     '<div style="font-family:sans-serif;font-size:16px;line-height:1.55;color:#0F4C5C;max-width:560px">' +
+    '<img src="' + site + '/email-logo.png" width="96" height="96" alt="Spotless Mate" ' +
+    'style="display:block;width:96px;height:96px;border-radius:50%;border:0;margin:0 0 20px">' +
     '<p style="font-size:22px;font-weight:bold;margin:0 0 16px">Thanks for your enquiry, ' + esc(first) + '!</p>' +
     '<p style="margin:0 0 16px">Our team will be in touch shortly with your free quote.</p>' +
     '<p style="margin:0 0 8px;font-weight:bold">Here\'s what you sent us:</p>' +
