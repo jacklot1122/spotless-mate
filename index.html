@@ -24,7 +24,9 @@
   color-scheme: light;
 }
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+[hidden] { display: none !important; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; }
+section[id] { scroll-margin-top: 72px; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 body { background: var(--paper); color: var(--teal); font-family: var(--font-body); font-size: 17px; line-height: 1.55; }
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--teal); }
@@ -42,12 +44,13 @@ a { color: inherit; }
 /* Header */
 .site-header { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--teal); color: var(--white); }
 .site-header .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 14px; }
-.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; font-family: var(--font-display); font-weight: 600; font-size: 24px; }
+.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; font-family: var(--font-display); font-weight: 600; font-size: 24px; white-space: nowrap; min-height: 44px; }
 .nav { display: flex; align-items: center; gap: 28px; }
 .nav a { text-decoration: none; font-weight: 500; font-size: 15px; color: var(--mint); }
 .nav a:hover { color: var(--white); }
 .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 48px; padding: 12px 26px; border-radius: 999px; border: 0; font-family: var(--font-display); font-weight: 600; font-size: 19px; text-decoration: none; cursor: pointer; transition: transform .15s ease, background-color .15s ease; }
-.btn:hover { transform: translateY(-2px); }
+@media (hover: hover) { .btn:hover { transform: translateY(-2px); } }
+.btn { white-space: nowrap; touch-action: manipulation; }
 @media (prefers-reduced-motion: reduce) { .btn { transition: none; } .btn:hover { transform: none; } }
 .btn-sun { background: var(--sun); color: var(--teal); }
 .btn-sun:hover { background: #FFE07A; }
@@ -135,7 +138,7 @@ a { color: inherit; }
 .new-card h3 span { color: var(--sun); }
 .new-card p { color: var(--mint); }
 form { background: var(--white); border: 2px solid var(--mint); border-radius: var(--radius); padding: clamp(22px, 4vw, 36px); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
-@media (max-width: 560px) { form { grid-template-columns: 1fr; } }
+@media (max-width: 560px) { form > * { grid-column: 1 / -1; } form > .field.half { grid-column: auto; } }
 .field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
 .field.full { grid-column: 1 / -1; }
 label { font-weight: 600; font-size: 15px; }
@@ -154,6 +157,46 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--t
 .site-footer .wrap { padding-block: 40px; display: flex; flex-wrap: wrap; gap: 20px; justify-content: space-between; align-items: center; }
 .site-footer .logo { color: var(--white); }
 .site-footer a { color: var(--white); }
+.site-footer p a { display: inline-block; padding-block: 12px; }
+
+/* Phones */
+@media (max-width: 560px) {
+  body { font-size: 16px; }
+  .band { padding-block: 52px; }
+  .section-head { margin-bottom: 28px; gap: 12px; }
+  .section-head h2 { font-size: 38px; }
+  .site-header .wrap { padding-block: 10px; gap: 12px; }
+  .logo { font-size: 21px; gap: 8px; }
+  .logo .sparkle { width: 22px; height: 22px; }
+  .nav .btn { font-size: 16px; padding: 8px 16px; }
+  .hero .wrap { padding-block: 40px 52px; }
+  .hero h1 { font-size: clamp(44px, 14vw, 58px); }
+  .hero .lead { margin-top: 18px; }
+  .hero-actions { margin-top: 28px; flex-direction: column; }
+  .hero-actions .btn, .form-actions .btn, .result-actions .btn { width: 100%; }
+  .ticks { margin-top: 24px; }
+  .service, .room, .tip { padding: 22px; }
+  .service { flex-direction: row; align-items: flex-start; flex-wrap: wrap; column-gap: 16px; }
+  .service .icon-dot { width: 48px; height: 48px; }
+  .service .icon-dot svg { width: 26px; height: 26px; }
+  .service h3 { font-size: 23px; flex: 1; align-self: center; }
+  .service p { flex-basis: 100%; }
+  .room h3, .tip h3 { font-size: 24px; }
+  .steps { gap: 24px; }
+  .steps li { display: grid; grid-template-columns: 52px 1fr; column-gap: 16px; row-gap: 6px; align-items: center; }
+  .steps li::before { width: 52px; height: 52px; font-size: 26px; margin: 0; grid-row: span 2; align-self: start; }
+  .steps h3 { font-size: 24px; }
+  .chip { font-size: 15px; padding: 8px 16px; }
+  .new-card { padding: 24px; margin-top: 24px; }
+  .new-card h3 { font-size: 27px; }
+  form { gap: 16px; }
+  .form-actions .hint:empty { display: none; }
+  .site-footer .wrap { flex-direction: column; align-items: flex-start; gap: 8px; padding-block: 32px max(32px, env(safe-area-inset-bottom, 0px)); }
+}
+@media (max-width: 359px) {
+  .logo { font-size: 19px; }
+  .nav .btn { padding: 8px 14px; font-size: 15px; }
+}
 </style>
 </head>
 <body>
@@ -369,13 +412,13 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--t
             <option>Just once</option>
           </select>
         </div>
-        <div class="field">
+        <div class="field half">
           <label for="q-beds">Bedrooms</label>
           <select id="q-beds" name="beds">
             <option>1</option><option selected>2</option><option>3</option><option>4</option><option>5+</option>
           </select>
         </div>
-        <div class="field">
+        <div class="field half">
           <label for="q-baths">Bathrooms</label>
           <select id="q-baths" name="baths">
             <option selected>1</option><option>2</option><option>3</option><option>4+</option>
