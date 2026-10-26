@@ -118,8 +118,8 @@ function confirmation(data, rows, site) {
     'Thanks for your enquiry! Our team will be in touch shortly with your free quote.\n\n' +
     "Here's what you sent us:\n" +
     summary.map(function (f) { return f[1] + ': ' + data[f[0]]; }).join('\n') + '\n\n' +
-    'Need to add anything? Just reply to this email.\n\n' +
-    'Cheers,\nThe Spotless Mate team\nHome cleaning in Ryde & greater Sydney\ninstagram.com/spotlessmate';
+    'Need to add anything? Just reply to this email, or call or text us on 0431 039 905.\n\n' +
+    'Cheers,\nThe Spotless Mate team\nHome cleaning in Ryde & greater Sydney\n0431 039 905 · instagram.com/spotlessmate';
   const html =
     '<div style="font-family:sans-serif;font-size:16px;line-height:1.55;color:#0F4C5C;max-width:560px">' +
     '<img src="' + site + '/email-logo.png" width="96" height="96" alt="Spotless Mate" ' +
@@ -133,9 +133,10 @@ function confirmation(data, rows, site) {
         '</td><td style="padding:8px 16px 8px 0;white-space:pre-wrap">' + esc(data[f[0]]) + '</td></tr>';
     }).join('') +
     '</table>' +
-    '<p style="margin:0 0 16px">Need to add anything? Just reply to this email.</p>' +
+    '<p style="margin:0 0 16px">Need to add anything? Just reply to this email, or call or text us on ' +
+    '<a href="tel:+61431039905" style="color:#0F4C5C;font-weight:bold">0431 039 905</a>.</p>' +
     '<p style="margin:0">Cheers,<br><strong>The Spotless Mate team</strong><br>' +
-    '<span style="color:#2F5F69">Home cleaning in Ryde &amp; greater Sydney · ' +
+    '<span style="color:#2F5F69">Home cleaning in Ryde &amp; greater Sydney · 0431 039 905 · ' +
     '<a href="https://www.instagram.com/spotlessmate/" style="color:#0F4C5C">@spotlessmate</a></span></p>' +
     '</div>';
   return {
