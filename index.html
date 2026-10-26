@@ -92,6 +92,9 @@ a { color: inherit; }
 .hero h1 { font-size: clamp(54px, 9vw, 112px); font-weight: 700; }
 .hero h1 span { color: var(--sun); }
 .hero .lead { color: var(--mint); margin-top: 24px; }
+.price-pill { display: inline-flex; align-items: baseline; gap: 8px; margin-top: 24px; padding: 10px 20px; border-radius: 999px; background: rgba(255,210,63,0.14); box-shadow: inset 0 0 0 2px var(--sun); color: var(--white); font-weight: 500; }
+.price-pill strong { font-family: var(--font-display); font-size: 28px; font-weight: 700; line-height: 1; color: var(--sun); }
+.price-pill span { font-size: 14px; color: var(--mint); }
 .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 36px; }
 .hero-art { position: relative; aspect-ratio: 1; max-width: 100%; }
 .hero-art svg { position: absolute; }
@@ -200,6 +203,9 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--t
   .hero .wrap { padding-block: 40px 52px; }
   .hero h1 { font-size: clamp(44px, 14vw, 58px); }
   .hero .lead { margin-top: 18px; }
+  .price-pill { margin-top: 20px; padding: 8px 16px; gap: 6px; font-size: 15px; white-space: nowrap; }
+  .price-pill strong { font-size: 24px; }
+  .price-pill span { font-size: 13px; }
   .hero-actions { margin-top: 28px; flex-direction: column; }
   .hero-actions .btn, .form-actions .btn, .result-actions .btn { width: 100%; }
   .ticks { margin-top: 24px; }
@@ -227,6 +233,7 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--t
 @media (max-width: 359px) {
   .logo { font-size: 19px; }
   .nav .btn { padding: 8px 12px; font-size: 15px; }
+  .price-pill span { display: none; }
 }
 </style>
 </head>
@@ -257,6 +264,7 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--t
         <p class="eyebrow" style="color: var(--mint); margin-bottom: 20px;">Home cleaning · Ryde &amp; greater Sydney</p>
         <h1>Come home to <span>spotless.</span></h1>
         <p class="lead">Friendly, reliable home cleaning from a local Ryde team. Weekly, fortnightly or one-off. You put your feet up, we'll do the scrubbing.</p>
+        <p class="price-pill">Regular cleans from <strong>$199</strong> <span>incl GST</span></p>
         <div class="hero-actions">
           <a class="btn btn-sun" href="#quote">Get a free quote</a>
           <a class="btn btn-ghost" href="tel:+61431039905" data-call="hero">
@@ -267,7 +275,7 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--t
         <div class="ticks">
           <span><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFD23F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7"/></svg>Locally based in Ryde</span>
           <span><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFD23F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7"/></svg>Regular or one-off cleans</span>
-          <span><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFD23F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7"/></svg>Regular cleans from $199</span>
+          <span><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFD23F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7"/></svg>Free quotes</span>
           <span><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFD23F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 9.5 17 19 7"/></svg>Public liability insured</span>
         </div>
       </div>
