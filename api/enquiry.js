@@ -76,6 +76,19 @@ module.exports = async function handler(req, res) {
   };
   if (data.email) payload.reply_to = data.email;
 
+  if (!(await send(payload))) {
+    return res.status(502).json({ error: 'Could not send right now.' });
+  }
+
+  // Confirmation to the customer. The enquiry already reached us, so a failure here is only logged.
+  if (data.email) {
+    await send(confirmation(data, rows));
+  }
+
+  return res.status(200).json({ ok: true });
+};
+
+async function send(payload) {
   try {
     const r = await fetch('https://api.resend.com/emails', {
       method: 'POST',
@@ -87,11 +100,47 @@ module.exports = async function handler(req, res) {
     });
     if (!r.ok) {
       console.error('Resend error', r.status, await r.text());
-      return res.status(502).json({ error: 'Could not send right now.' });
+      return false;
     }
-    return res.status(200).json({ ok: true });
+    return true;
   } catch (e) {
     console.error('Resend request failed', e);
-    return res.status(502).json({ error: 'Could not send right now.' });
+    return false;
   }
-};
+}
+
+function confirmation(data, rows) {
+  const first = data.name.split(/\s+/)[0];
+  const summary = rows.filter(function (f) { return f[0] !== 'name' && f[0] !== 'email'; });
+  const text =
+    'Hi ' + first + ',\n\n' +
+    'Thanks for your enquiry! Our team will be in touch shortly with your free quote.\n\n' +
+    "Here's what you sent us:\n" +
+    summary.map(function (f) { return f[1] + ': ' + data[f[0]]; }).join('\n') + '\n\n' +
+    'Need to add anything? Just reply to this email.\n\n' +
+    'Cheers,\nThe Spotless Mate team\nHome cleaning in Ryde & greater Sydney\ninstagram.com/spotlessmate';
+  const html =
+    '<div style="font-family:sans-serif;font-size:16px;line-height:1.55;color:#0F4C5C;max-width:560px">' +
+    '<p style="font-size:22px;font-weight:bold;margin:0 0 16px">Thanks for your enquiry, ' + esc(first) + '!</p>' +
+    '<p style="margin:0 0 16px">Our team will be in touch shortly with your free quote.</p>' +
+    '<p style="margin:0 0 8px;font-weight:bold">Here\'s what you sent us:</p>' +
+    '<table style="font-size:15px;border-collapse:collapse;background:#E6F7F2;border-radius:12px;margin:0 0 16px">' +
+    summary.map(function (f) {
+      return '<tr><td style="padding:8px 16px;color:#2F5F69;vertical-align:top">' + f[1] +
+        '</td><td style="padding:8px 16px 8px 0;white-space:pre-wrap">' + esc(data[f[0]]) + '</td></tr>';
+    }).join('') +
+    '</table>' +
+    '<p style="margin:0 0 16px">Need to add anything? Just reply to this email.</p>' +
+    '<p style="margin:0">Cheers,<br><strong>The Spotless Mate team</strong><br>' +
+    '<span style="color:#2F5F69">Home cleaning in Ryde &amp; greater Sydney · ' +
+    '<a href="https://www.instagram.com/spotlessmate/" style="color:#0F4C5C">@spotlessmate</a></span></p>' +
+    '</div>';
+  return {
+    from: FROM,
+    to: [data.email],
+    reply_to: TO,
+    subject: 'Thanks for your enquiry, ' + first + '!',
+    text: text,
+    html: html
+  };
+}

@@ -21,3 +21,4 @@ Environment variables (Vercel > Project > Settings > Environment Variables):
 
 `spotlessmate.com.au` must be a verified domain in Resend (Domains > Add domain, then add the DNS records it gives you), or sends will be rejected.
 Replies go straight to the customer when they leave an email (set as Reply-To).
+Customers who leave an email also get a confirmation ("Thanks for your enquiry...") with a summary of what they sent; replying to it goes to ENQUIRY_TO.
