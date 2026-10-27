@@ -167,6 +167,7 @@ a { color: inherit; }
 .new-card h3 { font-size: 32px; font-weight: 700; }
 .new-card h3 span { color: var(--sun); }
 .new-card p { color: var(--mint); }
+.new-card .review-link { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; align-self: flex-start; color: var(--sun); font-weight: 600; }
 .new-card .insured { display: flex; gap: 12px; align-items: flex-start; padding-top: 16px; border-top: 1px solid rgba(207,245,234,0.25); color: var(--white); font-weight: 500; }
 .new-card .insured svg { flex-shrink: 0; margin-top: 1px; }
 form { background: var(--white); border: 2px solid var(--mint); border-radius: var(--radius); padding: clamp(22px, 4vw, 36px); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
@@ -429,6 +430,10 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--t
           <p class="eyebrow" style="color: var(--mint);">We're new in town</p>
           <h3>Be one of our first <span>happy homes.</span></h3>
           <p>Book your first clean, then tell us how we went. Your review helps other Sydney locals find us.</p>
+          <a class="review-link" href="https://g.page/r/CSJb0O2R0OVuEAI/review" target="_blank" rel="noopener" data-review="quote-card">
+            <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="#FFD23F"><path d="m12 2.5 2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9Z"/></svg>
+            Cleaned with us? Leave a Google review
+          </a>
           <p class="insured"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFD23F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.4 7.5 9.5 4.3-1.1 7.5-4.9 7.5-9.5V6Z"/><path d="m8.8 12.2 2.3 2.3 4.4-4.6"/></svg>Every cleaner is covered by public liability insurance, so your home is in safe hands.</p>
         </div>
       </div>
@@ -513,7 +518,7 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--t
       <svg class="sparkle" aria-hidden="true" width="26" height="26" viewBox="0 0 100 100"><path d="M50 0C55 35 65 45 100 50C65 55 55 65 50 100C45 65 35 55 0 50C35 45 45 35 50 0Z" fill="#FFD23F"/></svg>
       Spotless Mate
     </a>
-    <p class="foot-info"><span>Home cleaning in Ryde &amp; greater Sydney</span><span class="sep"> · </span><span>Public liability insured</span><span class="sep"> · </span><a href="tel:+61431039905" data-call="footer">0431 039 905</a><span class="sep"> · </span><a href="https://www.instagram.com/spotlessmate/" target="_blank" rel="noopener">@spotlessmate</a></p>
+    <p class="foot-info"><span>Home cleaning in Ryde &amp; greater Sydney</span><span class="sep"> · </span><span>Public liability insured</span><span class="sep"> · </span><a href="tel:+61431039905" data-call="footer">0431 039 905</a><span class="sep"> · </span><a href="https://www.instagram.com/spotlessmate/" target="_blank" rel="noopener">@spotlessmate</a><span class="sep"> · </span><a href="https://g.page/r/CSJb0O2R0OVuEAI/review" target="_blank" rel="noopener" data-review="footer">Review us on Google</a></p>
   </div>
 </footer>
 
@@ -618,6 +623,8 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--t
   document.addEventListener('click', function (e) {
     var a = e.target.closest && e.target.closest('[data-call]');
     if (a && window.posthog && posthog.capture) posthog.capture(a.href.indexOf('sms:') === 0 ? 'text_click' : 'phone_click', { location: a.getAttribute('data-call') });
+    var rv = e.target.closest && e.target.closest('[data-review]');
+    if (rv && window.posthog && posthog.capture) posthog.capture('review_click', { location: rv.getAttribute('data-review') });
   });
 
   document.getElementById('q-copy').addEventListener('click', function () {
