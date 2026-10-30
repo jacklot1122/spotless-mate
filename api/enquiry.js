@@ -17,7 +17,7 @@ const FIELDS = [
   ['notes', 'Notes']
 ];
 
-// Same price list as the instant price on index.html (incl GST). Recomputed here so the
+// Same price list as the instant price on index.html. Recomputed here so the
 // emailed price can't be edited in the browser.
 const REGULAR = [199, 239, 299, 369, 439];
 const LARGER = [449, 569, 719, 869, 999]; // end of lease, deep, move in / out
@@ -33,7 +33,7 @@ function priceFor(d) {
   const price = Math.round(full * (1 - (regular ? (DISCOUNT[d.often] || 0) : 0)));
   const from = d.beds === '5+' || d.baths === '4+' ? 'from ' : '';
   const per = regular && d.often !== 'Just once' ? ' per clean' : '';
-  return from + '$' + price + per + ' incl GST';
+  return from + '$' + price + per;
 }
 
 function clean(v, max) {
@@ -91,7 +91,7 @@ module.exports = async function handler(req, res) {
   const payload = {
     from: FROM,
     to: [TO],
-    subject: 'Booking request: ' + data.name + ' (' + data.suburb + ')' + (data.price ? ', ' + data.price.replace(' incl GST', '') : ''),
+    subject: 'Booking request: ' + data.name + ' (' + data.suburb + ')' + (data.price ? ', ' + data.price : ''),
     text: text,
     html: html
   };
