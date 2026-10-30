@@ -1,4 +1,4 @@
-// Vercel serverless function: emails quote-form enquiries via Resend.
+// Vercel serverless function: emails booking requests from the instant-price form via Resend.
 // Env vars: RESEND_API_KEY (required), ENQUIRY_TO, ENQUIRY_FROM (optional overrides).
 
 const TO = process.env.ENQUIRY_TO || 'Enquiries@spotlessmate.com.au';
@@ -13,8 +13,28 @@ const FIELDS = [
   ['often', 'How often'],
   ['beds', 'Bedrooms'],
   ['baths', 'Bathrooms'],
+  ['price', 'Price shown'],
   ['notes', 'Notes']
 ];
+
+// Same price list as the instant price on index.html (incl GST). Recomputed here so the
+// emailed price can't be edited in the browser.
+const REGULAR = [199, 239, 299, 369, 439];
+const LARGER = [449, 569, 719, 869, 999]; // end of lease, deep, move in / out
+const EXTRA_BATH = 40;
+const DISCOUNT = { Weekly: 0.10, Fortnightly: 0.05 };
+
+function priceFor(d) {
+  const bedIdx = d.beds === '5+' ? 4 : parseInt(d.beds, 10) - 1;
+  const baths = d.baths === '4+' ? 4 : parseInt(d.baths, 10);
+  if (!(bedIdx >= 0 && bedIdx <= 4) || !(baths >= 1 && baths <= 4)) return '';
+  const regular = d.service === 'Regular clean';
+  const full = (regular ? REGULAR : LARGER)[bedIdx] + EXTRA_BATH * (baths - 1);
+  const price = Math.round(full * (1 - (regular ? (DISCOUNT[d.often] || 0) : 0)));
+  const from = d.beds === '5+' || d.baths === '4+' ? 'from ' : '';
+  const per = regular && d.often !== 'Just once' ? ' per clean' : '';
+  return from + '$' + price + per + ' incl GST';
+}
 
 function clean(v, max) {
   return typeof v === 'string' ? v.trim().slice(0, max) : '';
@@ -45,6 +65,7 @@ module.exports = async function handler(req, res) {
 
   const data = {};
   FIELDS.forEach(function (f) { data[f[0]] = clean(body[f[0]], f[0] === 'notes' ? 2000 : 200); });
+  data.price = priceFor(data);
 
   if (!data.name || !data.suburb) {
     return res.status(400).json({ error: 'Please add your name and suburb.' });
@@ -59,7 +80,7 @@ module.exports = async function handler(req, res) {
   const rows = FIELDS.filter(function (f) { return data[f[0]]; });
   const text = rows.map(function (f) { return f[1] + ': ' + data[f[0]]; }).join('\n');
   const html =
-    '<h2 style="font-family:sans-serif;color:#0b4f4a">New quote enquiry</h2>' +
+    '<h2 style="font-family:sans-serif;color:#0b4f4a">New booking request</h2>' +
     '<table style="font-family:sans-serif;font-size:15px;border-collapse:collapse">' +
     rows.map(function (f) {
       return '<tr><td style="padding:6px 16px 6px 0;color:#666;vertical-align:top">' + f[1] +
@@ -70,7 +91,7 @@ module.exports = async function handler(req, res) {
   const payload = {
     from: FROM,
     to: [TO],
-    subject: 'Quote enquiry: ' + data.name + ' (' + data.suburb + ')',
+    subject: 'Booking request: ' + data.name + ' (' + data.suburb + ')' + (data.price ? ', ' + data.price.replace(' incl GST', '') : ''),
     text: text,
     html: html
   };
@@ -115,7 +136,7 @@ function confirmation(data, rows, site) {
   const summary = rows.filter(function (f) { return f[0] !== 'name' && f[0] !== 'email'; });
   const text =
     'Hi ' + first + ',\n\n' +
-    'Thanks for your enquiry! Our team will be in touch shortly with your free quote.\n\n' +
+    "Thanks for your booking request! We'll be in touch within 1 hour (during business hours) to confirm a time.\n\n" +
     "Here's what you sent us:\n" +
     summary.map(function (f) { return f[1] + ': ' + data[f[0]]; }).join('\n') + '\n\n' +
     'Need to add anything? Just reply to this email, or call or text us on 0431 039 905.\n\n' +
@@ -124,8 +145,8 @@ function confirmation(data, rows, site) {
     '<div style="font-family:sans-serif;font-size:16px;line-height:1.55;color:#0F4C5C;max-width:560px">' +
     '<img src="' + site + '/email-logo.png" width="96" height="96" alt="Spotless Mate" ' +
     'style="display:block;width:96px;height:96px;border-radius:50%;border:0;margin:0 0 20px">' +
-    '<p style="font-size:22px;font-weight:bold;margin:0 0 16px">Thanks for your enquiry, ' + esc(first) + '!</p>' +
-    '<p style="margin:0 0 16px">Our team will be in touch shortly with your free quote.</p>' +
+    '<p style="font-size:22px;font-weight:bold;margin:0 0 16px">Thanks for your booking request, ' + esc(first) + '!</p>' +
+    '<p style="margin:0 0 16px">We\'ll be in touch within 1 hour (during business hours) to confirm a time.</p>' +
     '<p style="margin:0 0 8px;font-weight:bold">Here\'s what you sent us:</p>' +
     '<table style="font-size:15px;border-collapse:collapse;background:#E6F7F2;border-radius:12px;margin:0 0 16px">' +
     summary.map(function (f) {
@@ -143,7 +164,7 @@ function confirmation(data, rows, site) {
     from: FROM,
     to: [data.email],
     reply_to: TO,
-    subject: 'Thanks for your enquiry, ' + first + '!',
+    subject: 'Thanks for your booking request, ' + first + '!',
     text: text,
     html: html
   };
