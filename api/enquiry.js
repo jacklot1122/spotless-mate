@@ -13,7 +13,7 @@ const FIELDS = [
   ['often', 'How often'],
   ['beds', 'Bedrooms'],
   ['baths', 'Bathrooms'],
-  ['price', 'Price shown'],
+  ['price', 'Starting price'],
   ['notes', 'Notes']
 ];
 
@@ -31,9 +31,9 @@ function priceFor(d) {
   const regular = d.service === 'Regular clean';
   const full = (regular ? REGULAR : LARGER)[bedIdx] + EXTRA_BATH * (baths - 1);
   const price = Math.round(full * (1 - (regular ? (DISCOUNT[d.often] || 0) : 0)));
-  const from = d.beds === '5+' || d.baths === '4+' ? 'from ' : '';
   const per = regular && d.often !== 'Just once' ? ' per clean' : '';
-  return from + '$' + price + per;
+  // Always a starting price: the final price is confirmed before booking.
+  return 'from $' + price + per;
 }
 
 function clean(v, max) {
@@ -136,7 +136,7 @@ function confirmation(data, rows, site) {
   const summary = rows.filter(function (f) { return f[0] !== 'name' && f[0] !== 'email'; });
   const text =
     'Hi ' + first + ',\n\n' +
-    "Thanks for your booking request! We'll be in touch within 1 hour (during business hours) to confirm a time.\n\n" +
+    "Thanks for your booking request! We'll be in touch within 1 hour (during business hours) to confirm your final price and a time.\n\n" +
     "Here's what you sent us:\n" +
     summary.map(function (f) { return f[1] + ': ' + data[f[0]]; }).join('\n') + '\n\n' +
     'Need to add anything? Just reply to this email, or call or text us on 0431 039 905.\n\n' +
@@ -146,7 +146,7 @@ function confirmation(data, rows, site) {
     '<img src="' + site + '/email-logo.png" width="96" height="96" alt="Spotless Mate" ' +
     'style="display:block;width:96px;height:96px;border-radius:50%;border:0;margin:0 0 20px">' +
     '<p style="font-size:22px;font-weight:bold;margin:0 0 16px">Thanks for your booking request, ' + esc(first) + '!</p>' +
-    '<p style="margin:0 0 16px">We\'ll be in touch within 1 hour (during business hours) to confirm a time.</p>' +
+    '<p style="margin:0 0 16px">We\'ll be in touch within 1 hour (during business hours) to confirm your final price and a time.</p>' +
     '<p style="margin:0 0 8px;font-weight:bold">Here\'s what you sent us:</p>' +
     '<table style="font-size:15px;border-collapse:collapse;background:#E6F7F2;border-radius:12px;margin:0 0 16px">' +
     summary.map(function (f) {

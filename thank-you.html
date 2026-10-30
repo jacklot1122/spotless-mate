@@ -128,7 +128,7 @@ a { color: inherit; }
       </div>
       <p class="eyebrow" style="color: var(--mint);">Enquiry received</p>
       <h1>Thanks<span id="who"></span> <span>for enquiring!</span></h1>
-      <p class="lead" id="lead">We've got your booking request and will be in touch within 1 hour (during business hours) to confirm a time.</p>
+      <p class="lead" id="lead">We've got your booking request and will be in touch within 1 hour (during business hours) to confirm your final price and a time.</p>
       <p class="sooner">Need us sooner? Call or text <a href="tel:+61431039905">0431 039 905</a></p>
       <div class="hero-actions">
         <a class="btn btn-sun" href="/">Back to home</a>
@@ -181,7 +181,7 @@ a { color: inherit; }
   if (name) document.getElementById('who').textContent = ', ' + name.split(/\s+/)[0] + ',';
   if (email) {
     document.getElementById('lead').textContent =
-      "We've got your booking request and will be in touch within 1 hour (during business hours) to confirm a time. We've also sent a confirmation to " + email + '.';
+      "We've got your booking request and will be in touch within 1 hour (during business hours) to confirm your final price and a time. We've also sent a confirmation to " + email + '.';
   }
 })();
 </script>
