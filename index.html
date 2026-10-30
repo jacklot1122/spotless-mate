@@ -209,7 +209,20 @@ a { color: inherit; }
 .quote-head { grid-area: head; }
 .quote-grid > form { grid-area: form; }
 .quote-grid > .new-card { grid-area: card; }
-@media (max-width: 900px) { .quote-grid { grid-template-columns: 1fr; grid-template-areas: "head" "form" "card"; row-gap: 24px; } }
+/* Phones and tablets: the price box and room pickers come first, right under the nav; the heading, reply promise
+   and call links follow the form; the details fields stay hidden until "Book this clean" is tapped. */
+@media (max-width: 900px) {
+  .quote-grid { grid-template-columns: 1fr; grid-template-areas: "form" "head" "card"; row-gap: 24px; }
+  #quote { scroll-margin-top: 72px; }
+  .band.quote-band { padding-top: 12px; }
+  .step1 legend { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  form.collapsed .book-row { display: flex; }
+  form.collapsed .step2, form.collapsed .form-divider, form.collapsed .form-actions, form.collapsed .result { display: none; }
+}
+@media (max-width: 560px) { #quote { scroll-margin-top: 64px; } }
+.book-row { grid-column: 1 / -1; display: none; flex-direction: column; gap: 8px; }
+.book-btn { width: 100%; min-height: 58px; font-size: 21px; }
+.step2 { scroll-margin-top: 84px; }
 .new-card { background: var(--teal); color: var(--white); border-radius: var(--radius); padding: 32px; display: flex; flex-direction: column; gap: 14px; }
 .reply-note { display: inline-flex; align-items: flex-start; gap: 10px; margin-top: 4px; font-weight: 600; color: var(--teal); }
 .reply-note::before { content: ""; flex-shrink: 0; margin-top: 7px; width: 10px; height: 10px; border-radius: 50%; background: #2BB673; box-shadow: 0 0 0 4px rgba(43,182,115,0.2); }
@@ -238,8 +251,7 @@ form legend span { display: inline-flex; align-items: center; justify-content: c
   form fieldset > * { grid-column: 1 / -1; }
   form fieldset > .field.half { grid-column: auto; }
   .opt span { padding: 8px 13px; min-width: 46px; }
-  .price-box .from-label { font-weight: 600; font-size: 18px; color: var(--mint); align-self: center; margin-right: -4px; }
-.price-box .amount { font-size: 42px; }
+  .price-box .amount { font-size: 42px; }
 }
 .new-card h3 { font-size: 32px; font-weight: 700; }
 .new-card h3 span { color: var(--sun); }
@@ -387,16 +399,13 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--t
       </div>
 
       <form id="quote-form" novalidate>
-        <fieldset>
+        <fieldset class="step1">
           <legend><span>1</span>Your clean</legend>
-          <div class="pick">
-            <p id="l-service">Type of clean</p>
-            <div class="opts" role="radiogroup" aria-labelledby="l-service">
-              <label class="opt"><input type="radio" name="service" value="Regular clean" checked><span>Regular</span></label>
-              <label class="opt"><input type="radio" name="service" value="Deep clean"><span>Deep clean</span></label>
-              <label class="opt"><input type="radio" name="service" value="End of lease"><span>End of lease</span></label>
-              <label class="opt"><input type="radio" name="service" value="Move in / out"><span>Move in / out</span></label>
-            </div>
+          <div class="price-box" aria-live="polite">
+            <span class="from-label">from</span><span class="amount" id="p-amount">$199</span>
+            <span class="per" id="p-per"></span>
+            <span class="save" id="p-save">Tap your bedrooms and bathrooms to see your price</span>
+            <span class="small">Starting price for a standard home in good condition. We'll confirm your final price before booking. It can be higher for larger homes, heavy mess, pets or extras.</span>
           </div>
           <div class="pick">
             <p id="l-beds">Bedrooms</p>
@@ -417,6 +426,15 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--t
               <label class="opt"><input type="radio" name="baths" value="4+"><span>4+</span></label>
             </div>
           </div>
+          <div class="pick">
+            <p id="l-service">Type of clean</p>
+            <div class="opts" role="radiogroup" aria-labelledby="l-service">
+              <label class="opt"><input type="radio" name="service" value="Regular clean" checked><span>Regular</span></label>
+              <label class="opt"><input type="radio" name="service" value="Deep clean"><span>Deep clean</span></label>
+              <label class="opt"><input type="radio" name="service" value="End of lease"><span>End of lease</span></label>
+              <label class="opt"><input type="radio" name="service" value="Move in / out"><span>Move in / out</span></label>
+            </div>
+          </div>
           <div class="pick" id="often-pick">
             <p id="l-often">How often?</p>
             <div class="opts" role="radiogroup" aria-labelledby="l-often">
@@ -426,17 +444,16 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--t
               <label class="opt"><input type="radio" name="often" value="Just once"><span>One-off</span></label>
             </div>
           </div>
-          <div class="price-box" aria-live="polite">
-            <span class="from-label">from</span><span class="amount" id="p-amount">$199</span>
-            <span class="per" id="p-per"></span>
-            <span class="save" id="p-save">Tap your bedrooms and bathrooms to see your price</span>
-            <span class="small">Starting price for a standard home in good condition. We'll confirm your final price before booking. It can be higher for larger homes, heavy mess, pets or extras.</span>
-          </div>
         </fieldset>
+
+        <div class="book-row">
+          <button class="btn btn-sun book-btn" type="button" id="q-book">Book this clean</button>
+          <p class="hint" id="b-error" role="alert"></p>
+        </div>
 
         <div class="form-divider" aria-hidden="true"></div>
 
-        <fieldset>
+        <fieldset class="step2">
           <legend><span>2</span>Send your booking request</legend>
           <div class="field">
             <label for="q-name">Your name</label>
@@ -721,6 +738,24 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--t
     if (e.target.type === 'radio') renderPrice(e);
   });
   renderPrice();
+
+  // On phones and tablets the details fields stay hidden until "Book this clean" is tapped (CSS shows the
+  // button and hides the fields only while the form has this class, so without JS everything is visible).
+  var bookRow = document.querySelector('.book-row');
+  var bookErr = document.getElementById('b-error');
+  if (window.matchMedia && window.matchMedia('(max-width: 900px)').matches) form.classList.add('collapsed');
+  document.getElementById('q-book').addEventListener('click', function () {
+    if (quote().price === null) {
+      bookErr.textContent = 'Please tap your bedrooms and bathrooms first so we can price your clean.';
+      track('quote_form_error', { message: bookErr.textContent });
+      form.querySelector('input[name="' + (choice('beds') ? 'baths' : 'beds') + '"]').closest('.pick').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+    bookErr.textContent = '';
+    form.classList.remove('collapsed');
+    track('book_click', { price: quote().price });
+    document.querySelector('.step2').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
 
   function showFallback() {
     var q = quote();
