@@ -19,6 +19,14 @@
     gs.src = 'https://www.googletagmanager.com/gtag/js?id=G-26DNW2ZZSB';
     document.head.appendChild(gs);
   }
+</script><!-- Meta Pixel. Shares the analytics guard above; fbq() always exists so event calls never throw. -->
+<script>
+  if (window.smSkipAnalytics) { window.fbq = function () {}; }
+  else {
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '1099665872701431');
+    fbq('track', 'PageView');
+  }
 </script><link rel="icon" type="image/png" href="/favicon.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <script>
@@ -177,6 +185,7 @@ a { color: inherit; }
       if (window.posthog && posthog.capture) posthog.capture('quote_enquiry_submitted', props);
       // GA4 key event, imported into Google Ads as the "Request quote" conversion.
       gtag('event', 'generate_lead', { service: props.service, often: props.often, beds: props.beds, baths: props.baths, value: props.price || 0, currency: 'AUD' });
+      fbq('track', 'Lead', { content_name: props.service, value: props.price || 0, currency: 'AUD' });
       sessionStorage.removeItem('sm-enquiry');
     }
   } catch (e) {}

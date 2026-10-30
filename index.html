@@ -19,6 +19,14 @@
     gs.src = 'https://www.googletagmanager.com/gtag/js?id=G-26DNW2ZZSB';
     document.head.appendChild(gs);
   }
+</script><!-- Meta Pixel. Shares the analytics guard above; fbq() always exists so event calls never throw. -->
+<script>
+  if (window.smSkipAnalytics) { window.fbq = function () {}; }
+  else {
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '1099665872701431');
+    fbq('track', 'PageView');
+  }
 </script><link rel="icon" type="image/png" href="/favicon.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <script>
@@ -869,6 +877,7 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--t
     var a = e.target.closest && e.target.closest('[data-call]');
     if (a && window.posthog && posthog.capture) posthog.capture(a.href.indexOf('sms:') === 0 ? 'text_click' : 'phone_click', { location: a.getAttribute('data-call') });
     if (a) gtag('event', 'click_to_call', { method: a.href.indexOf('sms:') === 0 ? 'text' : 'call', location: a.getAttribute('data-call') });
+    if (a) fbq('track', 'Contact', { content_name: a.href.indexOf('sms:') === 0 ? 'text' : 'call' });
     var rv = e.target.closest && e.target.closest('[data-review]');
     if (rv && window.posthog && posthog.capture) posthog.capture('review_click', { location: rv.getAttribute('data-review') });
   });
