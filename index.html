@@ -356,7 +356,7 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--t
         <p class="eyebrow" style="color: var(--mint); margin-bottom: 20px;">Home cleaning · Ryde &amp; greater Sydney</p>
         <h1>Come home to <span>spotless.</span></h1>
         <p class="lead">Friendly, reliable home cleaning from a local Ryde team. Weekly, fortnightly or one-off. You put your feet up, we'll do the scrubbing.</p>
-        <p class="price-pill">Regular cleans from <strong>$199</strong></p>
+        <p class="price-pill">Regular cleans from <strong>$179</strong></p>
         <div class="hero-actions">
           <a class="btn btn-sun" href="#quote">See your price</a>
           <a class="btn btn-ghost" href="tel:+61431039905" data-call="hero">
@@ -402,7 +402,7 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--t
         <fieldset class="step1">
           <legend><span>1</span>Your clean</legend>
           <div class="price-box" aria-live="polite">
-            <span class="from-label">from</span><span class="amount" id="p-amount">$199</span>
+            <span class="from-label">from</span><span class="amount" id="p-amount">$179</span>
             <span class="per" id="p-per"></span>
             <span class="save" id="p-save">Tap your bedrooms and bathrooms to see your price</span>
             <span class="small">Starting price for a standard home in good condition. We'll confirm your final price before booking. It can be higher for larger homes, heavy mess, pets or extras.</span>
@@ -521,23 +521,25 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--t
           <div class="icon-dot"><svg aria-hidden="true" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#0F4C5C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 3l9 8"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/></svg></div>
           <h3>Regular cleans</h3>
           <p>Weekly or fortnightly visits, so home always feels fresh.</p>
-          <p class="from">From <strong>$199</strong></p>
+          <p class="from">From <strong>$179</strong></p>
         </article>
         <article class="service">
           <div class="icon-dot"><svg aria-hidden="true" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#0F4C5C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c1 7 3 9 10 10-7 1-9 3-10 10-1-7-3-9-10-10 7-1 9-3 10-10Z"/></svg></div>
           <h3>Deep cleans</h3>
           <p>A top-to-bottom refresh for every room in the house.</p>
+          <p class="from">From <strong>$329</strong></p>
         </article>
         <article class="service">
           <div class="icon-dot"><svg aria-hidden="true" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#0F4C5C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="16" r="4"/><path d="M11 13 21 3"/><path d="m17 7 3 3"/><path d="m15 9 2 2"/></svg></div>
           <h3>End of lease</h3>
           <p>Moving out? We'll get the place ready for inspection.</p>
-          <p class="from">From <strong>$449</strong></p>
+          <p class="from">From <strong>$399</strong></p>
         </article>
         <article class="service">
           <div class="icon-dot"><svg aria-hidden="true" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#0F4C5C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l9-4 9 4v10l-9 4-9-4Z"/><path d="m3 7 9 4 9-4"/><path d="M12 11v10"/></svg></div>
           <h3>Move in / out</h3>
           <p>Start fresh in your new home, or leave the old one sparkling.</p>
+          <p class="from">From <strong>$329</strong></p>
         </article>
       </div>
     </div>
@@ -643,7 +645,7 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--t
       <div class="faq">
         <details>
           <summary>How much does a clean cost?</summary>
-          <p>Use the <a href="#quote">instant price</a> to see your starting price straight away. We confirm your final price before booking, as it can be higher for larger homes, heavy mess or extras. Regular cleans start from $199 and end of lease, deep and move in/out cleans from $449. Each extra bathroom is $40, and regular cleans are 10% off weekly or 5% off fortnightly.</p>
+          <p>Use the <a href="#quote">instant price</a> to see your starting price straight away. We confirm your final price before booking, as it can be higher for larger homes, heavy mess or extras. Regular cleans start from $179, deep and move in/out cleans from $329, and end of lease cleans from $399. Each extra bathroom is $40, and regular cleans are 15% off weekly or 10% off fortnightly.</p>
         </details>
         <details>
           <summary>Which areas do you clean?</summary>
@@ -697,10 +699,16 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--t
   }
 
   // Price list. Keep in step with api/enquiry.js.
-  var REGULAR = [199, 239, 299, 369, 439];
-  var LARGER = [449, 569, 719, 869, 999]; // end of lease, deep, move in / out
+  var REGULAR = [179, 209, 249, 309, 369];
+  var END_OF_LEASE = [399, 449, 509, 619, 729];
+  var DEEP_EXTRA = 150; // deep clean and move in / out = regular + this
   var EXTRA_BATH = 40;
-  var DISCOUNT = { 'Weekly': 0.10, 'Fortnightly': 0.05 };
+  var DISCOUNT = { 'Weekly': 0.15, 'Fortnightly': 0.10 };
+  function basePrices(service) {
+    if (service === 'Regular clean') return REGULAR;
+    if (service === 'End of lease') return END_OF_LEASE;
+    return REGULAR.map(function (p) { return p + DEEP_EXTRA; });
+  }
   function quote() {
     var service = choice('service'), beds = choice('beds'), baths = choice('baths');
     var regular = service === 'Regular clean';
@@ -709,7 +717,7 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--t
     if (!beds || !baths) return { service: service, often: often, beds: beds, baths: baths, price: null, saving: 0 };
     var bedIdx = beds === '5+' ? 4 : Math.max(0, parseInt(beds, 10) - 1);
     var extraBaths = (baths === '4+' ? 4 : parseInt(baths, 10)) - 1;
-    var full = (regular ? REGULAR : LARGER)[bedIdx] + EXTRA_BATH * extraBaths;
+    var full = basePrices(service)[bedIdx] + EXTRA_BATH * extraBaths;
     var price = Math.round(full * (1 - (regular ? (DISCOUNT[often] || 0) : 0)));
     return { service: service, often: often, beds: beds, baths: baths, price: price, saving: full - price };
   }
@@ -721,7 +729,7 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--t
     oftenPick.hidden = q.service !== 'Regular clean';
     if (q.price === null) {
       // Placeholder until bedrooms and bathrooms are picked: the lowest starting price for this type of clean.
-      document.getElementById('p-amount').textContent = '$' + (q.service === 'Regular clean' ? REGULAR[0] : LARGER[0]);
+      document.getElementById('p-amount').textContent = '$' + basePrices(q.service)[0];
       document.getElementById('p-per').textContent = '';
       document.getElementById('p-save').textContent = 'Tap your bedrooms and bathrooms to see your price';
     } else {

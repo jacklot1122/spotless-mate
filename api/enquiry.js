@@ -19,17 +19,24 @@ const FIELDS = [
 
 // Same price list as the instant price on index.html. Recomputed here so the
 // emailed price can't be edited in the browser.
-const REGULAR = [199, 239, 299, 369, 439];
-const LARGER = [449, 569, 719, 869, 999]; // end of lease, deep, move in / out
+const REGULAR = [179, 209, 249, 309, 369];
+const END_OF_LEASE = [399, 449, 509, 619, 729];
+const DEEP_EXTRA = 150; // deep clean and move in / out = regular + this
 const EXTRA_BATH = 40;
-const DISCOUNT = { Weekly: 0.10, Fortnightly: 0.05 };
+const DISCOUNT = { Weekly: 0.15, Fortnightly: 0.10 };
+
+function basePrices(service) {
+  if (service === 'Regular clean') return REGULAR;
+  if (service === 'End of lease') return END_OF_LEASE;
+  return REGULAR.map(p => p + DEEP_EXTRA);
+}
 
 function priceFor(d) {
   const bedIdx = d.beds === '5+' ? 4 : parseInt(d.beds, 10) - 1;
   const baths = d.baths === '4+' ? 4 : parseInt(d.baths, 10);
   if (!(bedIdx >= 0 && bedIdx <= 4) || !(baths >= 1 && baths <= 4)) return '';
   const regular = d.service === 'Regular clean';
-  const full = (regular ? REGULAR : LARGER)[bedIdx] + EXTRA_BATH * (baths - 1);
+  const full = basePrices(d.service)[bedIdx] + EXTRA_BATH * (baths - 1);
   const price = Math.round(full * (1 - (regular ? (DISCOUNT[d.often] || 0) : 0)));
   const per = regular && d.often !== 'Just once' ? ' per clean' : '';
   // Always a starting price: the final price is confirmed before booking.
