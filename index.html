@@ -220,18 +220,21 @@ a { color: inherit; }
 .quote-grid > form { grid-area: form; }
 .quote-grid > .new-card { grid-area: card; }
 /* Phones and tablets: the price box and room pickers come first, right under the nav; the heading, reply promise
-   and call links follow the form; the details fields stay hidden until "Book this clean" is tapped. */
+   and call links follow the form. The price box sticks below the header while the pickers are on screen, so the
+   number visibly updates as they tap; it scrolls away with the end of the pickers fieldset. The in-box disclaimer
+   moves below the pickers (.price-note) so the sticky box stays compact. --header-h is set by JS from the real
+   header height; the fallbacks match the header's usual height. */
+.price-note { display: none; }
 @media (max-width: 900px) {
   .quote-grid { grid-template-columns: 1fr; grid-template-areas: "form" "head" "card"; row-gap: 24px; }
   #quote { scroll-margin-top: 72px; }
   .band.quote-band { padding-top: 12px; }
   .step1 legend { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-  form.collapsed .book-row { display: flex; }
-  form.collapsed .step2, form.collapsed .form-divider, form.collapsed .form-actions, form.collapsed .result { display: none; }
+  .price-box { position: sticky; top: calc(env(safe-area-inset-top, 0px) + var(--header-h, 72px) + 8px); z-index: 5; box-shadow: 0 8px 20px rgba(13, 59, 56, 0.18); }
+  .price-box .small { display: none; }
+  .price-note { display: block; grid-column: 1 / -1; font-size: 13px; color: var(--teal); opacity: 0.8; }
 }
-@media (max-width: 560px) { #quote { scroll-margin-top: 64px; } }
-.book-row { grid-column: 1 / -1; display: none; flex-direction: column; gap: 8px; }
-.book-btn { width: 100%; min-height: 58px; font-size: 21px; }
+@media (max-width: 560px) { #quote { scroll-margin-top: 64px; } .price-box { --header-h: 64px; } }
 .step2 { scroll-margin-top: 84px; }
 .new-card { background: var(--teal); color: var(--white); border-radius: var(--radius); padding: 32px; display: flex; flex-direction: column; gap: 14px; }
 .reply-note { display: inline-flex; align-items: flex-start; gap: 10px; margin-top: 4px; font-weight: 600; color: var(--teal); }
@@ -454,12 +457,8 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--t
               <label class="opt"><input type="radio" name="often" value="Just once"><span>One-off</span></label>
             </div>
           </div>
+          <p class="price-note">Starting price for a standard home in good condition. We'll confirm your final price before booking. It can be higher for larger homes, heavy mess, pets or extras.</p>
         </fieldset>
-
-        <div class="book-row">
-          <button class="btn btn-sun book-btn" type="button" id="q-book">Book this clean</button>
-          <p class="hint" id="b-error" role="alert"></p>
-        </div>
 
         <div class="form-divider" aria-hidden="true"></div>
 
@@ -757,23 +756,16 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--t
   });
   renderPrice();
 
-  // On phones and tablets the details fields stay hidden until "Book this clean" is tapped (CSS shows the
-  // button and hides the fields only while the form has this class, so without JS everything is visible).
-  var bookRow = document.querySelector('.book-row');
-  var bookErr = document.getElementById('b-error');
-  if (window.matchMedia && window.matchMedia('(max-width: 900px)').matches) form.classList.add('collapsed');
-  document.getElementById('q-book').addEventListener('click', function () {
-    if (quote().price === null) {
-      bookErr.textContent = 'Please tap your bedrooms and bathrooms first so we can price your clean.';
-      track('quote_form_error', { message: bookErr.textContent });
-      form.querySelector('input[name="' + (choice('beds') ? 'baths' : 'beds') + '"]').closest('.pick').scrollIntoView({ behavior: 'smooth', block: 'center' });
-      return;
-    }
-    bookErr.textContent = '';
-    form.classList.remove('collapsed');
-    track('book_click', { price: quote().price });
-    document.querySelector('.step2').scrollIntoView({ behavior: 'smooth', block: 'start' });
-  });
+  // The price box is sticky below the header on phones and tablets (CSS). Measure the real header height so
+  // the box sits exactly under it whatever the font or logo size; CSS has a fallback if this never runs.
+  var header = document.querySelector('.site-header');
+  var priceBox = form.querySelector('.price-box');
+  function setHeaderHeight() {
+    if (header && priceBox) priceBox.style.setProperty('--header-h', header.offsetHeight + 'px');
+  }
+  setHeaderHeight();
+  window.addEventListener('resize', setHeaderHeight);
+  window.addEventListener('load', setHeaderHeight);
 
   function showFallback() {
     var q = quote();
